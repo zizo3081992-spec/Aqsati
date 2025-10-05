@@ -1,0 +1,130 @@
+{
+  "entities": {
+    "Client": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Client",
+      "type": "object",
+      "description": "Represents a client with their details and financial information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the client."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the client."
+        },
+        "phone": {
+          "type": "string",
+          "description": "The phone number of the client."
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "The total amount owed by the client."
+        },
+        "numberOfMonths": {
+          "type": "number",
+          "description": "The number of months for the installment plan."
+        },
+        "startDate": {
+          "type": "string",
+          "description": "The start date of the installment plan.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "phone",
+        "totalAmount",
+        "numberOfMonths",
+        "startDate"
+      ]
+    },
+    "Installment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Installment",
+      "type": "object",
+      "description": "Represents an installment payment made by a client.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the installment."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "Reference to the Client entity. (Relationship: Client 1:N Installment)"
+        },
+        "amount": {
+          "type": "number",
+          "description": "The amount paid in this installment."
+        },
+        "paymentDate": {
+          "type": "string",
+          "description": "The date when the installment was paid.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "clientId",
+        "amount",
+        "paymentDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}/clients/{clientId}",
+        "definition": {
+          "entityName": "Client",
+          "schema": {
+            "$ref": "#/backend/entities/Client"
+          },
+          "description": "Stores client information. Path-based ownership ensures that only the user who owns the client data can access it.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The ID of the user who owns the client data."
+            },
+            {
+              "name": "clientId",
+              "description": "The unique ID of the client."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/clients/{clientId}/installments/{installmentId}",
+        "definition": {
+          "entityName": "Installment",
+          "schema": {
+            "$ref": "#/backend/entities/Installment"
+          },
+          "description": "Stores installment payment information for a specific client. Path-based ownership ensures only the owning user can access these documents.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The ID of the user who owns the client and installment data."
+            },
+            {
+              "name": "clientId",
+              "description": "The unique ID of the client to whom the installment belongs."
+            },
+            {
+              "name": "installmentId",
+              "description": "The unique ID of the installment."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to manage client information and installment payments for the Aqsati application. It utilizes path-based ownership for user-owned client data and subcollections for associated installments. This structure facilitates straightforward security rules and efficient data retrieval. Specifically, this design achieves Authorization Independence by avoiding hierarchical dependencies; security rules can be written based on the path without needing to fetch data from parent documents. The structure also supports required QAPs; listing clients is secure due to the path-based ownership, and listing installments is secure as they reside within the client's document path."
+  }
+}
