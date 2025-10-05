@@ -95,7 +95,10 @@ export default function ClientActions({
         endDate: endDate,
       });
 
-      const whatsappUrl = `https://wa.me/${client.phone}?text=${encodeURIComponent(result.message)}`;
+      // Clean the phone number for the wa.me link
+      const cleanPhoneNumber = client.phone.replace(/[\s+()-]/g, '');
+
+      const whatsappUrl = `https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(result.message)}`;
       window.open(whatsappUrl, '_blank');
     } catch (error) {
       console.error('Failed to generate WhatsApp message', error);
