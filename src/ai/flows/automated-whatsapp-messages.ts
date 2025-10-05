@@ -43,14 +43,14 @@ const prompt = ai.definePrompt({
   Remaining Amount: {{{remaining}}}
   
   Instructions:
-  1.  Start with a friendly greeting: "مرحبًا {{{name}}}،"
+  1.  Start with a friendly greeting: "السلام عليكم ورحمة الله وبركاته {{{name}}}،"
   2.  Write a simple and polite sentence to remind the client of their outstanding payment.
   3.  Clearly state the remaining amount.
   4.  End with a polite closing, like "شكرًا لتعاونكم."
   5.  The entire message should be short, friendly, and professional. Do not add any extra information.
   
   Example Output:
-  "مرحبًا {{{name}}}، نود تذكيركم بوجود دفعة مستحقة. المبلغ المتبقي هو {{{remaining}}} جنيه. شكرًا لتعاونكم."
+  "السلام عليكم ورحمة الله وبركاته {{{name}}}، نود تذكيركم بوجود دفعة مستحقة. المبلغ المتبقي هو {{{remaining}}} جنيه. شكرًا لتعاونكم."
   `,
 });
 
