@@ -109,7 +109,10 @@ export default function DashboardHeader({
           endDate: endDate,
         });
         
-        const whatsappUrl = `https://wa.me/${client.phone}?text=${encodeURIComponent(result.message)}`;
+        // Clean the phone number for the wa.me link
+        const cleanPhoneNumber = client.phone.replace(/[\s+()-]/g, '');
+
+        const whatsappUrl = `https://wa.me/${cleanPhoneNumber}?text=${encodeURIComponent(result.message)}`;
         window.open(whatsappUrl, '_blank');
         
         await new Promise(resolve => setTimeout(resolve, 300));
