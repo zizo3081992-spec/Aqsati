@@ -83,6 +83,7 @@ export default function ClientActions({
     try {
       const remaining = client.total - paid;
       const endDate = calculateEndDate(client.startDate, client.months);
+      const monthlyInstallment = client.months > 0 ? client.total / client.months : client.total;
 
       const result = await generateWhatsAppMessage({
         name: client.name,
@@ -93,6 +94,7 @@ export default function ClientActions({
         months: client.months,
         startDate: client.startDate,
         endDate: endDate,
+        monthlyInstallment: monthlyInstallment,
       });
 
       // Clean the phone number for the wa.me link
