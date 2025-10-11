@@ -20,6 +20,7 @@ const WhatsAppMessageInputSchema = z.object({
   months: z.number().describe('The number of months for the payment plan.'),
   startDate: z.string().describe('The start date of the payment plan (YYYY-MM-DD).'),
   endDate: z.string().describe('The end date of the payment plan (YYYY-MM-DD).'),
+  monthlyInstallment: z.number().describe('The amount of the monthly installment.'),
 });
 export type WhatsAppMessageInput = z.infer<typeof WhatsAppMessageInputSchema>;
 
@@ -41,16 +42,18 @@ const prompt = ai.definePrompt({
 
   Client Name: {{{name}}}
   Remaining Amount: {{{remaining}}}
+  Monthly Installment: {{{monthlyInstallment}}}
   
   Instructions:
   1.  Start with a friendly greeting: "السلام عليكم ورحمة الله وبركاته {{{name}}}،"
   2.  Write a simple and polite sentence to remind the client of their outstanding payment.
-  3.  Clearly state the remaining amount.
-  4.  End with a polite closing, like "شكرًا لتعاونكم."
-  5.  The entire message should be short, friendly, and professional. Do not add any extra information.
+  3.  Clearly state the due installment amount.
+  4.  Then, state the total remaining amount.
+  5.  End with a polite closing, like "شكرًا لتعاونكم."
+  6.  The entire message should be short, friendly, and professional. Do not add any extra information.
   
   Example Output:
-  "السلام عليكم ورحمة الله وبركاته {{{name}}}، نود تذكيركم بوجود دفعة مستحقة. المبلغ المتبقي هو {{{remaining}}} جنيه. شكرًا لتعاونكم."
+  "السلام عليكم ورحمة الله وبركاته {{{name}}}، نود تذكيركم بموعد القسط المستحق وقيمته {{{monthlyInstallment}}} جنيه. المبلغ المتبقي الإجمالي هو {{{remaining}}} جنيه. شكرًا لتعاونكم."
   `,
 });
 
