@@ -97,6 +97,7 @@ export default function DashboardHeader({
         if (remaining <= 0) continue;
 
         const endDate = calculateEndDate(client.startDate, client.months);
+        const monthlyInstallment = client.months > 0 ? client.total / client.months : client.total;
 
         const result = await generateWhatsAppMessage({
           name: client.name,
@@ -107,6 +108,7 @@ export default function DashboardHeader({
           months: client.months,
           startDate: client.startDate,
           endDate: endDate,
+          monthlyInstallment: monthlyInstallment,
         });
         
         // Clean the phone number for the wa.me link
